@@ -1,4 +1,4 @@
-using RababaTest.Managers;
+using RababaTest;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;

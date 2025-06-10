@@ -4,9 +4,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
-namespace RababaTest.Managers
+namespace RababaTest
 {
     public class PlayerConfiguration
     {
@@ -96,6 +95,11 @@ namespace RababaTest.Managers
                 _playerConfigurations.Add(new PlayerConfiguration(playerInput));
             }
             Debug.Log($"Player joined: {playerInput.playerIndex}");
+        }
+
+        public List<PlayerConfiguration> GetPlayerConfigs()
+        {
+            return _playerConfigurations;
         }
     }
 }
