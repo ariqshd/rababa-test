@@ -11,7 +11,14 @@ namespace RababaTest
 
         private void Start()
         {
+            if (!PlayerConfigurationManager.Instance)
+            {
+                Debug.LogError("Player configuration manager not found");
+                return;
+            };
+            
             var playerConfigs = PlayerConfigurationManager.Instance.GetPlayerConfigs().ToArray();
+            
             for (int i = 0; i < playerConfigs.Length; i++)
             {
                 var player = Instantiate(playerPrefab, spawnPoints[i].position, spawnPoints[i].rotation,
