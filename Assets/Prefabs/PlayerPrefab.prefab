@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7121782536891766305}
   - component: {fileID: 8080912239893055797}
   - component: {fileID: 5512786449447044527}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 7386532477709488662}
   - component: {fileID: 2962696230603083875}
   - component: {fileID: 2695471511984753046}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerPrefab
   m_TagString: Player
   m_Icon: {fileID: 0}
