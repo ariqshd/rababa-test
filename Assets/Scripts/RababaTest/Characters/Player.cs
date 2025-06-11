@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace RababaTest.Characters
 {
-    public class PlayerInputHandler : MonoBehaviour
+    public class Player : Character
     {
         [SerializeField]
         private MeshRenderer playerMesh;
@@ -23,7 +23,6 @@ namespace RababaTest.Characters
             _playerConfiguration = config;
             playerMesh.material = _playerConfiguration.PlayerMaterial;
             config.PlayerInput.onActionTriggered += Input_onActionTriggered;
-            
         }
 
         private void Input_onActionTriggered(InputAction.CallbackContext ctx)
@@ -38,6 +37,16 @@ namespace RababaTest.Characters
         {
             if(_mover != null)
                 _mover.SetInputVector(ctx.ReadValue<Vector2>());
+        }
+
+        public override void TakeDamage(float damage)
+        {
+            
+        }
+
+        protected override void Die()
+        {
+            base.Die();
         }
     }
 }

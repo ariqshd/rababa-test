@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RababaTest.Interfaces;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace RababaTest.Characters
 {
-    public class FlyingEnemy : MonoBehaviour
+    public class FlyingEnemy : Character
     {
         [Header("References")]
         [SerializeField] private WaypointHolder waypointHolder;
@@ -30,9 +31,6 @@ namespace RababaTest.Characters
         [SerializeField] private float strikeImpactRadius = 5f; // Radius of the strike impact
         [SerializeField] private float strikePreparationTime = 1f; // Time before executing the strike
         [SerializeField] private float strikeRecoveryTime = 0.5f; // Time to recover after strike
-
-        [Header("Projectile Settings")]
-        [SerializeField] private float projectileSpeed = 100f;
         [SerializeField] private float angleToShootAtPlayer = 0.1f;
 
         private Transform _currentWaypointTarget;
@@ -152,11 +150,13 @@ namespace RababaTest.Characters
                 // Get the Projectile component
                 var projectile = proj.GetComponent<Projectile>();
                 if (projectile == null) yield return null;
+
+                projectile.SetInstigator(gameObject);
                 
                 // Make the third rocket not explode
                 projectile.shouldExplode = (i < 2);
 
-                projectile.Launch(spreadRotation * Vector3.forward * projectileSpeed);
+                projectile.Launch(spreadRotation * Vector3.forward);
                 yield return new WaitForSeconds(UnityEngine.Random.Range(0.5f, 1.5f));
             }
         }
@@ -175,14 +175,13 @@ namespace RababaTest.Characters
             Debug.DrawRay(projectileSpawnPoint.transform.position, direction * 100, Color.red, 5f);
             
             Collider[] hitPlayers = Physics.OverlapSphere(transform.position + direction * 10, 2f, 1 << 6);
-            foreach (var p in hitPlayers)
+            foreach (var hitCollider in hitPlayers)
             {
-                Debug.Log($"hit player {p.gameObject.name}");
-                // var health = enemyCollider.GetComponent<Health>();
-                // if (health != null)
-                // {
-                //     health.TakeDamage(5);
-                // }
+                Debug.Log($"hit player {hitCollider.gameObject.name}");
+                if (hitCollider.TryGetComponent(out IDamageable damageable))
+                {
+                    damageable.TakeDamage(1);
+                }
             }
             
             if (flameParticleSystem != null)
@@ -262,15 +261,10 @@ namespace RababaTest.Characters
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, strikeImpactRadius);
             foreach (Collider hitCollider in hitColliders)
             {
-                // if (hitCollider.CompareTag("Player"))
-                // {
-                //     // Apply damage or effect to player
-                //     var health = hitCollider.GetComponent<Health>();
-                //     if (health != null)
-                //     {
-                //         health.TakeDamage(1); // Adjust damage value as needed
-                //     }
-                // }
+                if (hitCollider.TryGetComponent(out IDamageable damageable))
+                {
+                    damageable.TakeDamage(1);
+                }
             }
 
             // Recovery period
@@ -366,6 +360,16 @@ namespace RababaTest.Characters
 
             Debug.Log("No players in range");
             return null;
+        }
+
+        public override void TakeDamage(float damage)
+        {
+            
+        }
+
+        protected override void Die()
+        {
+            base.Die();
         }
     }
 }

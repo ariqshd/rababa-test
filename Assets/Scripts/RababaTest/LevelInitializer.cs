@@ -24,7 +24,7 @@ namespace RababaTest
                 var player = Instantiate(playerPrefab, spawnPoints[i].position, spawnPoints[i].rotation,
                     gameObject.transform);
 
-                if (!player.TryGetComponent(out PlayerInputHandler playerInputHandler))
+                if (!player.TryGetComponent(out Player playerInputHandler))
                 {
                     Debug.LogError("Player input handler not found");
                     return;
