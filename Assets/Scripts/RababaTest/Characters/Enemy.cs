@@ -15,8 +15,8 @@ namespace RababaTest.Characters
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private GameObject shadowPrefab; // Prefab for the target shadow
         [SerializeField] private Transform projectileSpawnPoint;
-        [SerializeField] private ParticleSystem flameParticleSystem;
         [SerializeField] private LayerMask groundLayer;
+        [SerializeField] private GameObject flameThrowerPrefab;
 
         [Header("Movement Settings")]
         [SerializeField] private float moveSpeed = 20f;
@@ -182,8 +182,8 @@ namespace RababaTest.Characters
             Vector3 direction = transform.forward;
             
             Vector3 spherePosition = transform.position + direction * 10f;
-            Debug.DrawRay(projectileSpawnPoint.transform.position, direction * 100, Color.red, 5f);
-            
+
+            var firebomb = Instantiate(flameThrowerPrefab, spherePosition, Quaternion.identity, projectileSpawnPoint).GetComponent<ParticleSystem>();
             Collider[] hitPlayers = Physics.OverlapSphere(spherePosition, 2f, 1 << 6);
             HashSet<GameObject> alreadyHitPlayers = new HashSet<GameObject>();
             foreach (var hitCollider in hitPlayers)
@@ -200,10 +200,7 @@ namespace RababaTest.Characters
                 }
             }
             
-            if (flameParticleSystem != null)
-            {
-                flameParticleSystem.Play();
-            }
+            Destroy(firebomb.gameObject, firebomb.main.duration);
         }
         
         private IEnumerator EagleStrikeState()
@@ -258,7 +255,7 @@ namespace RababaTest.Characters
                 shadowObj = Instantiate(shadowPrefab, shadowSpawnPosition, shadowRotation);
                 var shadow = shadowObj.GetComponent<StrikeShadow>();
                 if (shadow == null) yield return null;
-                shadow.SetRadius(strikeImpactRadius);
+                shadow.SetRadius(strikeImpactRadius * 3f);
             }
 
             // Wait before striking
@@ -327,8 +324,8 @@ namespace RababaTest.Characters
             switch (randomAttack)
             {
                 case 0:
-                    // yield return RocketLaunch();
-                    yield return FireFlame();
+                    yield return RocketLaunch();
+                    // yield return FireFlame();
                     // yield return EagleStrikeState();
                     break;
                 case 1:
@@ -338,8 +335,8 @@ namespace RababaTest.Characters
                     break;
                 case 2:
                     // yield return RocketLaunch();
-                    yield return FireFlame();
-                    // yield return EagleStrikeState();
+                    // yield return FireFlame();
+                    yield return EagleStrikeState();
                     break;
             }
 

@@ -198,10 +198,10 @@ MonoBehaviour:
   projectilePrefab: {fileID: 5798741965324300031, guid: d976532ca3f55554b91ca8de27fb30e2, type: 3}
   shadowPrefab: {fileID: 3097918686495826450, guid: 1e5c08fe964b6884f8edc5c6b889e3d5, type: 3}
   projectileSpawnPoint: {fileID: 1290813065217653131}
-  flameParticleSystem: {fileID: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 55
+  flameThrowerPrefab: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4, type: 3}
   moveSpeed: 10
   rotationSpeed: 7.5
   circleDuration: 5
@@ -209,7 +209,7 @@ MonoBehaviour:
   attackDuration: 3
   eagleStrikeHeight: 25
   strikeSpeed: 40
-  strikeImpactRadius: 5
+  strikeImpactRadius: 2
   strikePreparationTime: 1
   strikeRecoveryTime: 0.5
   angleToShootAtPlayer: 0.1

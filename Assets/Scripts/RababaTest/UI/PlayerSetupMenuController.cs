@@ -1,6 +1,8 @@
+using System;
 using RababaTest;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RababaTest.UI
 {
@@ -12,6 +14,24 @@ namespace RababaTest.UI
 
         [SerializeField] private TextMeshProUGUI titleText;
         [SerializeField] private GameObject selectMenu;
+        [SerializeField] private Material colorA;
+        [SerializeField] private Material colorB;
+        [SerializeField] private Button startButton;
+
+        private void OnEnable()
+        {
+            startButton.onClick.AddListener(() => PlayerConfigurationManager.Instance.TryStartGame());
+        }
+
+        private void OnDisable()
+        {
+            startButton.onClick.RemoveListener(() => PlayerConfigurationManager.Instance.TryStartGame());
+        }
+
+        private void Start()
+        {
+            SetColor(colorA);
+        }
 
         void Update()
         {
@@ -52,6 +72,7 @@ namespace RababaTest.UI
             }
             
             PlayerConfigurationManager.Instance.ReadyPlayer(_playerIndex);
+            PlayerConfigurationManager.Instance.TryStartGame();
         }
     }
 }

@@ -64,7 +64,10 @@ namespace RababaTest
             }
             
             playerConfiguration.IsReady = true;
-            
+        }
+
+        public void TryStartGame()
+        {
             if (IsAllPlayersReady())
             {
                 Debug.Log("All players are ready. Let's start the game");
@@ -74,7 +77,6 @@ namespace RababaTest
             {
                 Debug.LogWarning("All players must be ready to start the game");
             }
-            
         }
 
         public bool IsAllPlayersReady()
