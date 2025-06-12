@@ -150,7 +150,6 @@ GameObject:
   - component: {fileID: 6246679695580151536}
   - component: {fileID: 4173004154330026293}
   - component: {fileID: 7647653244231224081}
-  - component: {fileID: 4158554631682917085}
   - component: {fileID: 7243053172636410168}
   m_Layer: 0
   m_Name: FlyingAI
@@ -237,34 +236,6 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4158554631682917085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3253164441989941427}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Graph: {fileID: 8161975678897986734, guid: b345fe11882b73144a3009e4ed35b483, type: 2}
-  m_BlackboardVariableOverridesList:
-  - rid: 1412064538917601561
-  m_IsInitialised: 0
-  m_IsStarted: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: 1412064538917601561
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Self
-        m_Value: {fileID: 3253164441989941427}
 --- !u!136 &7243053172636410168
 CapsuleCollider:
   m_ObjectHideFlags: 0
