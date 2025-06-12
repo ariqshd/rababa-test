@@ -1058,8 +1058,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e58ba86f-35be-4e7e-891b-9705a6618e31"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": ""MultiTap"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";WASD"",
                     ""action"": ""Submit"",
@@ -1069,8 +1069,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e35c9535-0590-4220-a74c-dbd6ab95e6b1"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": ""MultiTap"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Arrows"",
                     ""action"": ""Submit"",

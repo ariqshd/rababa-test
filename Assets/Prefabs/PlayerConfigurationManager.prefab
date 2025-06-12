@@ -92,17 +92,9 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 42a8e7ce-bb6c-4010-bfac-0a5f64650aef
-        m_Path: <Keyboard>/upArrow
-        m_Interactions: MultiTap
-        m_Processors: 
-        m_Groups: 
-        m_Action: Join
-        m_Flags: 0
-      - m_Name: 
-        m_Id: 5be7de62-70fa-4e8b-bed9-b536a227380d
-        m_Path: <Keyboard>/w
-        m_Interactions: MultiTap
+        m_Id: fcb14af7-0c2e-4e27-88ee-5bda98539449
+        m_Path: <Keyboard>/enter
+        m_Interactions: 
         m_Processors: 
         m_Groups: 
         m_Action: Join

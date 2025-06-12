@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 4173004154330026293}
   - component: {fileID: 7647653244231224081}
   - component: {fileID: 4158554631682917085}
+  - component: {fileID: 7243053172636410168}
   m_Layer: 0
   m_Name: FlyingAI
   m_TagString: Untagged
@@ -195,7 +196,6 @@ MonoBehaviour:
   onDie:
     m_PersistentCalls:
       m_Calls: []
-  waypointHolder: {fileID: 0}
   projectilePrefab: {fileID: 5798741965324300031, guid: d976532ca3f55554b91ca8de27fb30e2, type: 3}
   shadowPrefab: {fileID: 3097918686495826450, guid: 1e5c08fe964b6884f8edc5c6b889e3d5, type: 3}
   projectileSpawnPoint: {fileID: 1290813065217653131}
@@ -213,7 +213,6 @@ MonoBehaviour:
   strikeImpactRadius: 5
   strikePreparationTime: 1
   strikeRecoveryTime: 0.5
-  projectileSpeed: 750
   angleToShootAtPlayer: 0.1
 --- !u!136 &7647653244231224081
 CapsuleCollider:
@@ -232,7 +231,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 15
   m_Height: 1
@@ -253,7 +252,6 @@ MonoBehaviour:
   m_Graph: {fileID: 8161975678897986734, guid: b345fe11882b73144a3009e4ed35b483, type: 2}
   m_BlackboardVariableOverridesList:
   - rid: 1412064538917601561
-  - rid: 1412064538917601653
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
@@ -267,14 +265,29 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 3253164441989941427}
-    - rid: 1412064538917601653
-      type: {class: 'BlackboardVariable`1[[RababaTest.Characters.FlyingEnemy, Assembly-CSharp]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 4628775918302324858
-          m_Value1: 4214998407120342510
-        Name: FlyingEnemy
-        m_Value: {fileID: 4173004154330026293}
+--- !u!136 &7243053172636410168
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3253164441989941427}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8439857723546760404
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +392,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2

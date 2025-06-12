@@ -13,12 +13,17 @@ namespace RababaTest
         public PlayerInput playerInput;
         private void Awake()
         {
-            var rootMenu = GameObject.Find("MainLayout");
-            if (rootMenu != null)
+            PlayerSetupHud playerSetupHud = FindAnyObjectByType<PlayerSetupHud>();
+            if (playerSetupHud != null)
             {
-                var menu = Instantiate(playerSetupMenuPrefab, rootMenu.transform);
+                var menu = Instantiate(playerSetupMenuPrefab);
+                playerSetupHud.AddPlayerCard(menu);
                 playerInput.uiInputModule = menu.GetComponentInChildren<InputSystemUIInputModule>();
-                menu.GetComponent<PlayerSetupMenuController>().SetPlayerIndex(playerInput.playerIndex);
+                if (menu.TryGetComponent(out PlayerSetupMenuController playerSetup))
+                {
+                    playerSetup.SetPlayerName($"Player {playerInput.playerIndex + 1}");
+                    playerSetup.SetPlayerIndex(playerInput.playerIndex);
+                }
             }
         }
     }

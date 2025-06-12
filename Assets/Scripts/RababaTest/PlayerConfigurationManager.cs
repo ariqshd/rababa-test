@@ -1,31 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RababaTest.EventBus;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace RababaTest
 {
-    public class PlayerConfiguration
-    {
-        public PlayerConfiguration(PlayerInput playerInput)
-        {
-            PlayerIndex = playerInput.playerIndex;
-            PlayerInput = playerInput;
-        }
-
-        public PlayerInput PlayerInput;
-        public int PlayerIndex;
-        public bool IsReady;
-        public Material PlayerMaterial;
-    }
-
     public class PlayerConfigurationManager : MonoBehaviour
     {
-        private List<PlayerConfiguration> _playerConfigurations;
-
         [SerializeField] private int maxPlayers = 2;
+        private List<PlayerConfiguration> _playerConfigurations;
+        private int _playerJoinCount;
         
         public static PlayerConfigurationManager Instance;
 
@@ -41,6 +28,18 @@ namespace RababaTest
                 DontDestroyOnLoad(Instance);
                 _playerConfigurations = new List<PlayerConfiguration>();
             }
+        }
+
+        public void SetPlayerName(int playerIndex, string name)
+        {
+            var playerConfiguration = _playerConfigurations.Find(x => x.PlayerIndex == playerIndex);
+            if (playerConfiguration == null)
+            {
+                Debug.Log("Player configuration not found");
+                return;
+            }
+            
+            playerConfiguration.PlayerName = name;
         }
         
         public void SetPlayerColor(int playerIndex, Material color)
@@ -71,6 +70,10 @@ namespace RababaTest
                 Debug.Log("All players are ready. Let's start the game");
                 SceneManager.LoadScene("Game");
             }
+            else
+            {
+                Debug.LogWarning("All players must be ready to start the game");
+            }
             
         }
 
@@ -95,6 +98,11 @@ namespace RababaTest
                 _playerConfigurations.Add(new PlayerConfiguration(playerInput));
             }
             Debug.Log($"Player joined: {playerInput.playerIndex}");
+            _playerJoinCount++;
+            if (_playerJoinCount >= maxPlayers)
+            {
+                EventBus<AllPlayersJoinedEvent>.Raise(new AllPlayersJoinedEvent());
+            }
         }
 
         public List<PlayerConfiguration> GetPlayerConfigs()

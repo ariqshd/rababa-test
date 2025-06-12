@@ -1,8 +1,6 @@
 using RababaTest;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace RababaTest.UI
 {
@@ -13,23 +11,26 @@ namespace RababaTest.UI
         private bool _inputEnabled;
 
         [SerializeField] private TextMeshProUGUI titleText;
-        [SerializeField] private GameObject readyPanel;
         [SerializeField] private GameObject selectMenu;
-        [SerializeField] private Button readyButton;
 
-        public void SetPlayerIndex(int playerIndex)
-        {
-            _playerIndex = playerIndex;
-            titleText.text = $"Player {_playerIndex + 1}";
-            _ignoreInputTime = Time.time + _ignoreInputTime;
-        }
-        
         void Update()
         {
             if (Time.time > _ignoreInputTime)
             {
                 _inputEnabled = true;
             }
+        }
+        
+        public void SetPlayerIndex(int playerIndex)
+        {
+            _playerIndex = playerIndex;
+            _ignoreInputTime = Time.time + _ignoreInputTime;
+        }
+
+        public void SetPlayerName(string playerName)
+        {
+            titleText.text = playerName;
+            PlayerConfigurationManager.Instance.SetPlayerName(_playerIndex, titleText.text);
         }
 
         public void SetColor(Material color)
@@ -40,9 +41,7 @@ namespace RababaTest.UI
             }
             
             PlayerConfigurationManager.Instance.SetPlayerColor(_playerIndex, color);
-            readyPanel.SetActive(true);
-            readyButton.Select();
-            selectMenu.SetActive(false);
+            ReadyPlayer();
         }
 
         public void ReadyPlayer()
@@ -53,7 +52,6 @@ namespace RababaTest.UI
             }
             
             PlayerConfigurationManager.Instance.ReadyPlayer(_playerIndex);
-            readyButton.gameObject.SetActive(false);
         }
     }
 }

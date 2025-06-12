@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0645e730eb779254aab499eedae00438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileSpeed: 650
   lifeTime: 15
   shouldExplode: 1
-  explosionEffectPrefab: {fileID: 0}
+  particle: {fileID: 0}
