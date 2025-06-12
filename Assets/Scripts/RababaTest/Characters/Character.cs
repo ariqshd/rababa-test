@@ -12,7 +12,7 @@ namespace RababaTest.Characters
         private float _currentHealth;
 
         [HideInInspector] public UnityEvent onHealthChange;
-        [HideInInspector] public UnityEvent onDie;
+        [HideInInspector] public UnityEvent<Character> onDie;
         
         private void Start()
         {
@@ -30,17 +30,29 @@ namespace RababaTest.Characters
 
         public virtual void TakeDamage(float damage)
         {
+            if(_currentHealth <= 0) return;
             ChangeHealth(-damage);
         }
 
         protected virtual void Die()
         {
-            onDie?.Invoke();
+            Debug.Log($"{gameObject.name} dies");
+            gameObject.SetActive(false);
+            onDie?.Invoke(this);
         }
 
         protected void ChangeHealth(float health)
         {
             _currentHealth += health;
+            if (_currentHealth > maxHealth)
+            {
+                _currentHealth = maxHealth;
+            }
+            else if (_currentHealth < 0)
+            {
+                _currentHealth = 0;
+            }
+
             onHealthChange?.Invoke();
         }
 
@@ -48,6 +60,11 @@ namespace RababaTest.Characters
         {
             _currentHealth = health;
             onHealthChange?.Invoke();
+        }
+
+        public float GetHealth()
+        {
+            return _currentHealth;
         }
     }
 }

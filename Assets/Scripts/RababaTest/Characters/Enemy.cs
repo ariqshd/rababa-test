@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RababaTest.EventBus;
 using RababaTest.Interfaces;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -8,10 +9,9 @@ using Random = UnityEngine.Random;
 
 namespace RababaTest.Characters
 {
-    public class FlyingEnemy : Character
+    public class Enemy : Character
     {
         [Header("References")]
-        [SerializeField] private WaypointHolder waypointHolder;
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private GameObject shadowPrefab; // Prefab for the target shadow
         [SerializeField] private Transform projectileSpawnPoint;
@@ -39,6 +39,7 @@ namespace RababaTest.Characters
 
         private void Start()
         {
+            WaypointHolder waypointHolder = FindAnyObjectByType<WaypointHolder>();
             if (waypointHolder != null)
             {
                 waypointHolder.RefreshWaypoints();
@@ -77,12 +78,19 @@ namespace RababaTest.Characters
         }
 
 
-        public IEnumerator RotateUntilFacingPlayer(GameObject target, float angleThreshold)
+        public IEnumerator RotateUntilFacingPlayer(GameObject target, float angleThreshold, float timeout = 5f)
         {
-            while (!IsFacingPlayer(angleThreshold))
+            float timer = 0f;
+            while (!IsFacingPlayer(angleThreshold) && timer < timeout)
             {
                 FaceTarget(target.transform.position);
+                timer += Time.deltaTime;
                 yield return null;
+            }
+            
+            if (timer >= timeout)
+            {
+                Debug.Log("Rotate timeout reached.");
             }
         }
 
@@ -136,8 +144,8 @@ namespace RababaTest.Characters
             // Launch angles for the three rockets
             Vector3[] spreadAngles = new Vector3[] {
                 Vector3.zero,
-                new Vector3(0, 5, 0),  // 15 degrees to the right
-                new Vector3(0, -5, 0)  // 15 degrees to the left
+                new Vector3(0, 2, 0),  // 15 degrees to the right
+                new Vector3(0, -2, 0)  // 15 degrees to the left
             };
 
             for (int i = 0; i < 3; i++)
@@ -168,19 +176,27 @@ namespace RababaTest.Characters
             _currentTarget = GetRandomPlayerInRange(100);
             if(!_currentTarget) yield break;
             yield return StartCoroutine(RotateUntilFacingPlayer(_currentTarget,angleToShootAtPlayer));
+            // FaceTarget(_currentTarget.transform.position);
             
             RaycastHit hit;
             Vector3 direction = transform.forward;
             
+            Vector3 spherePosition = transform.position + direction * 10f;
             Debug.DrawRay(projectileSpawnPoint.transform.position, direction * 100, Color.red, 5f);
             
-            Collider[] hitPlayers = Physics.OverlapSphere(transform.position + direction * 10, 2f, 1 << 6);
+            Collider[] hitPlayers = Physics.OverlapSphere(spherePosition, 2f, 1 << 6);
+            HashSet<GameObject> alreadyHitPlayers = new HashSet<GameObject>();
             foreach (var hitCollider in hitPlayers)
             {
                 Debug.Log($"hit player {hitCollider.gameObject.name}");
                 if (hitCollider.TryGetComponent(out IDamageable damageable))
                 {
-                    damageable.TakeDamage(1);
+                    // Only apply damage once per player
+                    if (!alreadyHitPlayers.Contains(hitCollider.gameObject))
+                    {
+                        damageable.TakeDamage(1);
+                        alreadyHitPlayers.Add(hitCollider.gameObject);
+                    }
                 }
             }
             
@@ -258,12 +274,18 @@ namespace RababaTest.Characters
             Destroy(shadowObj);
 
             // Impact effect
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, strikeImpactRadius);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, strikeImpactRadius, 1 << 6);
+            HashSet<GameObject> alreadyHitPlayers = new HashSet<GameObject>();
             foreach (Collider hitCollider in hitColliders)
             {
                 if (hitCollider.TryGetComponent(out IDamageable damageable))
                 {
-                    damageable.TakeDamage(1);
+                    // Only apply damage once per player
+                    if (!alreadyHitPlayers.Contains(hitCollider.gameObject))
+                    {
+                        damageable.TakeDamage(1);
+                        alreadyHitPlayers.Add(hitCollider.gameObject);
+                    }
                 }
             }
 
@@ -305,8 +327,8 @@ namespace RababaTest.Characters
             switch (randomAttack)
             {
                 case 0:
-                    yield return RocketLaunch();
-                    // yield return FireFlame();
+                    // yield return RocketLaunch();
+                    yield return FireFlame();
                     // yield return EagleStrikeState();
                     break;
                 case 1:
@@ -316,8 +338,8 @@ namespace RababaTest.Characters
                     break;
                 case 2:
                     // yield return RocketLaunch();
-                    // yield return FireFlame();
-                    yield return EagleStrikeState();
+                    yield return FireFlame();
+                    // yield return EagleStrikeState();
                     break;
             }
 
@@ -364,7 +386,8 @@ namespace RababaTest.Characters
 
         public override void TakeDamage(float damage)
         {
-            
+            base.TakeDamage(damage);
+            EventBus<BossTakeDamageEvent>.Raise(new BossTakeDamageEvent { CurrentHealth = GetHealth()});
         }
 
         protected override void Die()

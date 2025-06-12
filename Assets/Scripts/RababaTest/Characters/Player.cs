@@ -1,3 +1,4 @@
+using RababaTest.EventBus;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -41,7 +42,9 @@ namespace RababaTest.Characters
 
         public override void TakeDamage(float damage)
         {
+            base.TakeDamage(damage);
             
+            EventBus<PlayerTakeDamageEvent>.Raise(new PlayerTakeDamageEvent { PlayerIndex = _playerConfiguration.PlayerIndex, CurrentHealth = GetHealth()});
         }
 
         protected override void Die()

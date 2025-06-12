@@ -52,6 +52,8 @@ namespace RababaTest
             
             if (projectile.GetInstigator() != null)
             {
+                projectile.transform.SetParent(transform.root);
+                projectile.SetCanExplode(true);
                 projectile.Launch(projectile.GetInstigator());
             }
         }

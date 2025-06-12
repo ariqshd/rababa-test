@@ -13,7 +13,7 @@ namespace RababaTest
         public ParticleSystem particle;
 
         private Rigidbody _rigidbody;
-        private bool _unexploded = false;
+        private bool _canExplode = true;
         private GameObject _instigator;
         
         private Coroutine _lifeTimeCoroutine;
@@ -110,7 +110,7 @@ namespace RababaTest
 
         private void OnCollisionEnter(Collision other)
         {
-            if (_unexploded) return;
+            if (!_canExplode) return;
             
             Debug.Log($"Projectile hit with {other.gameObject.name}");
             if (other.gameObject.TryGetComponent(out IDamageable damageable))
@@ -127,9 +127,14 @@ namespace RababaTest
                 else
                 {
                     _rigidbody.linearVelocity = Vector3.zero;
-                    _unexploded = true;
+                    _canExplode = false;
                 }
             }
+        }
+
+        public void SetCanExplode(bool canExplode)
+        {
+            _canExplode = canExplode;
         }
 
         public GameObject GetInstigator()
@@ -139,7 +144,7 @@ namespace RababaTest
 
         public bool CanCollect()
         {
-            return _unexploded;
+            return !_canExplode;
         }
     }
 }
