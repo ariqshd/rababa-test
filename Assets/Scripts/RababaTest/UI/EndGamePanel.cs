@@ -1,4 +1,5 @@
 using RababaTest.Core;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ namespace RababaTest.UI
     {
         [SerializeField] private Button restartButton;
         [SerializeField] private Button exitButton;
+        [SerializeField] private TextMeshProUGUI totalTimeText;
 
         private void OnEnable()
         {
@@ -32,6 +34,17 @@ namespace RababaTest.UI
         {
             LevelInitializer.Instance.Restart();
             gameObject.SetActive(false);
+        }
+        
+        public void SetActive(bool active)
+        {
+            gameObject.SetActive(active);
+        }
+        
+        public void SetTotalTime(float time)
+        {
+            totalTimeText.gameObject.SetActive(true);
+            totalTimeText.text = $"Total Time: {time:0.00}";
         }
     }
 }

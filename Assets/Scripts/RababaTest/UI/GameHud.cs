@@ -1,4 +1,6 @@
+using System;
 using RababaTest.EventBus;
+using TMPro;
 using UnityEngine;
 
 namespace RababaTest.UI
@@ -8,8 +10,9 @@ namespace RababaTest.UI
         [SerializeField] private PlayerInfo _leftPlayerInfo;
         [SerializeField] private PlayerInfo _rightPlayerInfo;
         [SerializeField] private PlayerInfo _bossInfo;
-        [SerializeField] private GameObject _gameOverPanel;
-        [SerializeField] private GameObject _bossDefeatedPanel;
+        [SerializeField] private EndGamePanel _gameOverPanel;
+        [SerializeField] private EndGamePanel _bossDefeatedPanel;
+        [SerializeField] private TextMeshProUGUI _timerText;
         
         private EventBinding<PlayerSpawnEvent> _playerSpawnEvent;
         private EventBinding<PlayerTakeDamageEvent> _playerTakeDamageEvent;
@@ -18,6 +21,9 @@ namespace RababaTest.UI
         private EventBinding<BossDefeatedEvent> _bossDefeatedEvent;
         private EventBinding<GameOverEvent> _gameOverEvent;
         
+        float _timer;
+        private float _timerCache;
+        private bool _canTickTimer = false;
         private void OnEnable()
         {
             _playerSpawnEvent = new EventBinding<PlayerSpawnEvent>(HandleOnPlayerSpawnEvent);
@@ -39,20 +45,36 @@ namespace RababaTest.UI
             EventBus<GameOverEvent>.Register(_gameOverEvent);
         }
 
+        private void Update()
+        {
+            if (_canTickTimer)
+            {
+                _timer += Time.deltaTime;
+                _timerText.text = $"{Mathf.RoundToInt(_timer)}";                
+            }
+        }
+
         private void HandleGameOverEvent()
         {
             _gameOverPanel.SetActive(true);
             _bossInfo.Flush();
             _leftPlayerInfo.Flush();
             _rightPlayerInfo.Flush();
+            _canTickTimer = false;
+            _timerCache = _timer;
+            _timer = 0;
         }
 
         private void BossDefeatedEvent()
         {
+            _bossDefeatedPanel.SetTotalTime(_timerCache);
             _bossDefeatedPanel.SetActive(true);
             _bossInfo.Flush();
             _leftPlayerInfo.Flush();
             _rightPlayerInfo.Flush();
+            _canTickTimer = false;
+            _timerCache = _timer;
+            _timer = 0;
         }
 
         private void HandleBossTakeDamageEvent(BossTakeDamageEvent obj)
@@ -76,6 +98,7 @@ namespace RababaTest.UI
         private void HandleBossSpawnEvent(BossSpawnEvent obj)
         {
             _bossInfo.Set(3);
+            _canTickTimer = true;
         }
 
         private void HandleOnPlayerSpawnEvent(PlayerSpawnEvent obj)
