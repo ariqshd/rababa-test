@@ -14,7 +14,7 @@ namespace RababaTest.Characters
         [HideInInspector] public UnityEvent onHealthChange;
         [HideInInspector] public UnityEvent<Character> onDie;
         
-        private void Start()
+        protected virtual void Start()
         {
             SetHealth(maxHealth);
             onHealthChange.AddListener(HandleOnHealthChange);

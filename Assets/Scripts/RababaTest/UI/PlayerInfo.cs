@@ -51,6 +51,7 @@ namespace RababaTest.UI
             {
                 Destroy(heart);
             }
+            _hearts.Clear();
         }
 
         public void SetHeart(int value)

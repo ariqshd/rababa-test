@@ -234,7 +234,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6233375438233061639
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3075,6 +3075,6 @@ MonoBehaviour:
   _leftPlayerInfo: {fileID: 2349722265248739628}
   _rightPlayerInfo: {fileID: 1674598373948635518}
   _bossInfo: {fileID: 7184893459598854536}
-  _gameOverPanel: {fileID: 6224160608380102344}
-  _bossDefeatedPanel: {fileID: 6676068041121775616}
+  _gameOverPanel: {fileID: 1837628239351714878}
+  _bossDefeatedPanel: {fileID: 8466990411178865959}
   _timerText: {fileID: 6363129163735114157}

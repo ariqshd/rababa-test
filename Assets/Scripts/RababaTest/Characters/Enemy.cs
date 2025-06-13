@@ -37,21 +37,21 @@ namespace RababaTest.Characters
         private Transform[] _waypoints;
         private GameObject _currentTarget;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             WaypointHolder waypointHolder = FindAnyObjectByType<WaypointHolder>();
             if (waypointHolder != null)
             {
                 waypointHolder.RefreshWaypoints();
                 _waypoints = waypointHolder.waypoints;
             }
-
+        
             if (_waypoints == null || _waypoints.Length == 0) return;
-
+        
             StartCoroutine(StateMachine());
         }
-
-
+        
         public void FaceTarget(Vector3 targetPos)
         {
             Vector3 dir = targetPos - transform.position;
@@ -329,14 +329,14 @@ namespace RababaTest.Characters
                     // yield return EagleStrikeState();
                     break;
                 case 1:
-                    // yield return RocketLaunch();
-                    yield return FireFlame();
+                    yield return RocketLaunch();
+                    // yield return FireFlame();
                     // yield return EagleStrikeState();
                     break;
                 case 2:
-                    // yield return RocketLaunch();
+                    yield return RocketLaunch();
                     // yield return FireFlame();
-                    yield return EagleStrikeState();
+                    // yield return EagleStrikeState();
                     break;
             }
 

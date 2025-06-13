@@ -67,19 +67,20 @@ namespace RababaTest.UI
 
         private void BossDefeatedEvent()
         {
-            _bossDefeatedPanel.SetTotalTime(_timerCache);
-            _bossDefeatedPanel.SetActive(true);
             _bossInfo.Flush();
             _leftPlayerInfo.Flush();
             _rightPlayerInfo.Flush();
             _canTickTimer = false;
             _timerCache = _timer;
             _timer = 0;
+            _bossDefeatedPanel.SetTotalTime(_timerCache);
+            _bossDefeatedPanel.SetActive(true);
         }
 
         private void HandleBossTakeDamageEvent(BossTakeDamageEvent obj)
         {
             _bossInfo.SetHeart((int)obj.CurrentHealth);
+            Debug.Log($"Boss current health: {obj.CurrentHealth}");
         }
 
         private void PlayerTakeDamageEvent(PlayerTakeDamageEvent obj)
